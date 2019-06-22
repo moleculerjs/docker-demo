@@ -17,6 +17,7 @@
     "moleculer"
   ],
   "author": "MoleculerJS",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/moleculerjs/docker-demo.git"
