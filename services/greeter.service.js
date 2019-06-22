@@ -26,7 +26,10 @@ module.exports = {
 		 * @returns
 		 */
 		hello() {
-			return "Hello Moleculer";
+			return {
+				from: this.broker.nodeID,
+				response: "Hello Moleculer"
+			};
 		},
 
 		/**

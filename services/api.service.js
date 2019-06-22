@@ -15,7 +15,11 @@ module.exports = {
 			whitelist: [
 				// Access to any actions in all services under "/api" URL
 				"**"
-			]
+			],
+			onAfterCall(ctx, route, req, res, data) {
+				res.setHeader("X-ApiGateway", this.broker.nodeID);
+				return data;
+			}
 		}],
 
 		// Serve assets from "public" folder
