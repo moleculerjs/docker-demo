@@ -1,6 +1,12 @@
 [![Moleculer](https://badgen.net/badge/Powered%20by/Moleculer/0e83cd)](https://moleculer.services)
 
-# docker-demo
+# Demo project for Docker
+
+## Install
+
+```bash
+docker run moleculer/demo
+```
 
 ## NPM scripts
 
