@@ -47,7 +47,6 @@ services:
   # Database store
   mongo:
     image: mongo
-    command: mongod --smallfiles --oplogSize 128
     volumes:
       - db:/data/db
     restart: unless-stopped
