@@ -16,6 +16,12 @@ module.exports = {
 				// Access to any actions in all services under "/api" URL
 				"**"
 			],
+
+			aliases: {
+				"GET /hello": "greeter.hello",
+				"REST /products": "products"
+			},
+
 			onAfterCall(ctx, route, req, res, data) {
 				res.setHeader("X-ApiGateway", this.broker.nodeID);
 				return data;

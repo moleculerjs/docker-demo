@@ -25,11 +25,11 @@ module.exports = {
 		 *
 		 * @returns
 		 */
-		hello() {
-			return {
-				from: this.broker.nodeID,
-				response: "Hello Moleculer"
+		hello(ctx) {
+			ctx.meta.$responseHeaders = {
+				"X-NodeID": this.broker.nodeID
 			};
+			return `Hello Moleculer from node '${this.broker.nodeID}'`;
 		},
 
 		/**
