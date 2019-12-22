@@ -30,7 +30,13 @@ docker-compose up -d
 # Usage with Kubernetes
 This command starts all services in individual pods, a NATS server as transporter and a MongoDB server.
 ```bash
-kubectl apply -f k8s.yaml
+kubectl apply -f https://raw.githubusercontent.com/moleculerjs/docker-demo/master/k8s.yaml
+```
+
+# Usage with [K3s](https://k3s.io/)
+This command starts all services in individual pods, a NATS server as transporter and a MongoDB server.
+```bash
+kubectl apply -f https://raw.githubusercontent.com/moleculerjs/docker-demo/master/k3s.yaml
 ```
 
 # Services
@@ -38,7 +44,7 @@ kubectl apply -f k8s.yaml
 - **greeter**: Sample service with `hello` and `welcome` actions.
 - **products**: Sample DB service with MongoDB if `process.env.MONGO_URI` is defined, otherwise with NeDB.
 
-# Test the project
+# Test the running project
 
 **Call the `greeter.hello` action**
 ```bash
