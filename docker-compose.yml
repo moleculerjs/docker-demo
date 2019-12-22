@@ -3,9 +3,8 @@ version: "3.0"
 services:
 
   api:
-    build:
-      context: .
-    image: docker-demo
+    image: moleculer-demo
+    restart: unless-stopped
     env_file: docker-compose.env
     environment:
       SERVICES: api
@@ -16,18 +15,47 @@ services:
       - "traefik.port=3000"
       - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=PathPrefix:/"
+    depends_on:
+      - nats
 
   greeter:
-    build:
-      context: .
-    image: docker-demo
+    image: moleculer-demo
+    restart: unless-stopped
     env_file: docker-compose.env
     environment:
       SERVICES: greeter
+    depends_on:
+      - nats
 
+  products:
+    image: moleculer-demo
+    restart: unless-stopped
+    env_file: docker-compose.env
+    environment:
+      SERVICES: products
+    depends_on:
+      - nats
+      - mongo
 
+  # NATS for transporter
+  nats:
+    image: nats
+    ports:
+      - "4222:4222"
+    restart: unless-stopped
+
+  # Database store
+  mongo:
+    image: mongo
+    command: mongod --smallfiles --oplogSize 128
+    volumes:
+      - db:/data/db
+    restart: unless-stopped
+
+  # Reverse proxy for API server
   traefik:
-    image: traefik
+    image: traefik:1.7
+    restart: unless-stopped
     command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
     ports:
       - "3000:80"
@@ -35,3 +63,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
+
+volumes:
+  db:
+    driver: local
