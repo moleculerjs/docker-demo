@@ -3,7 +3,7 @@ version: "3.0"
 services:
 
   api:
-    image: moleculer-demo
+    image: moleculer/demo
     restart: unless-stopped
     env_file: docker-compose.env
     environment:
@@ -19,7 +19,7 @@ services:
       - nats
 
   greeter:
-    image: moleculer-demo
+    image: moleculer/demo
     restart: unless-stopped
     env_file: docker-compose.env
     environment:
@@ -28,7 +28,7 @@ services:
       - nats
 
   products:
-    image: moleculer-demo
+    image: moleculer/demo
     restart: unless-stopped
     env_file: docker-compose.env
     environment:
