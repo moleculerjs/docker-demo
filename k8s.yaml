@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: moleculer-demo-api
-        image: moleculer/demo:1.1.0
+        image: moleculer/demo:1.2.0
         env:
           - name: SERVICEDIR
             value: services
@@ -87,7 +87,7 @@ spec:
     spec:
       containers:
       - name: moleculer-demo-greeter
-        image: moleculer/demo:1.1.0
+        image: moleculer/demo:1.2.0
         env:
           - name: SERVICEDIR
             value: services
@@ -123,7 +123,7 @@ spec:
     spec:
       containers:
       - name: moleculer-demo-products
-        image: moleculer/demo:1.1.0
+        image: moleculer/demo:1.2.0
         env:
           - name: SERVICEDIR
             value: services
