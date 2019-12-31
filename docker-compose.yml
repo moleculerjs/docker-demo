@@ -27,6 +27,15 @@ services:
     depends_on:
       - nats
 
+  calc:
+    image: moleculer/demo
+    restart: unless-stopped
+    env_file: docker-compose.env
+    environment:
+      SERVICES: calc
+    depends_on:
+      - nats
+
   products:
     image: moleculer/demo
     restart: unless-stopped

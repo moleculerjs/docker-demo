@@ -19,7 +19,8 @@ module.exports = {
 
 			aliases: {
 				"GET /hello": "greeter.hello",
-				"REST /products": "products"
+				"REST /products": "products",
+				"GET /pi": "calc.pi"
 			},
 
 			onAfterCall(ctx, route, req, res, data) {

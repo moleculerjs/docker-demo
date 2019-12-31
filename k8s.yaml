@@ -233,7 +233,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: manual
   resources:
     requests:
       storage: 100Mi
