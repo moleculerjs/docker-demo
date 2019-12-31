@@ -88,7 +88,7 @@ spec:
             value: greeter
           - name: TRANSPORTER
             value: nats://nats:4222    
-                       
+
 ---
 #########################################################
 # Calc service
@@ -241,7 +241,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: manual
   resources:
     requests:
       storage: 100Mi
