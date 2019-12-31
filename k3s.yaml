@@ -59,13 +59,6 @@ spec:
             value: api
           - name: TRANSPORTER
             value: nats://nats:4222
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 64Mi        
 
 ---
 #########################################################
@@ -94,14 +87,7 @@ spec:
           - name: SERVICES
             value: greeter
           - name: TRANSPORTER
-            value: nats://nats:4222
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 64Mi                
+            value: nats://nats:4222          
 
 ---
 #########################################################
@@ -130,14 +116,7 @@ spec:
           - name: SERVICES
             value: calc
           - name: TRANSPORTER
-            value: nats://nats:4222
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 128Mi
-          requests:
-            cpu: 100m
-            memory: 64Mi                
+            value: nats://nats:4222               
 
 ---
 #########################################################
@@ -168,14 +147,7 @@ spec:
           - name: TRANSPORTER
             value: nats://nats:4222
           - name: MONGO_URI
-            value: mongodb://mongo:27017/moleculer-demo
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 64Mi                
+            value: mongodb://mongo:27017/moleculer-demo              
 
 ---
 #########################################################

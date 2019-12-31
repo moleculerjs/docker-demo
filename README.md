@@ -73,6 +73,7 @@ replicaset.apps/moleculer-demo-products-784446b876   2         2         2      
 
 # Services
 - **api**: API Gateway services
+- **calc**: Sample service with heavy mathematical calculation to test auto scaling of K8s.
 - **greeter**: Sample service with `hello` and `welcome` actions.
 - **products**: Sample DB service with MongoDB if `process.env.MONGO_URI` is defined, otherwise with NeDB.
 
@@ -107,6 +108,24 @@ curl -X POST -d '{"name": "Samsung Galaxy S10", "category": "phones", "price": 2
 curl http://$HOSTNAME/api/products
 ```
 
+# Connect from CLI
+1. Port forwarding the NATS service port
+	```bash
+	kubectl port-forward --address 0.0.0.0 service/nats 4222
+	```
+	>If you have firewall, don't forget to allow this port.
+2. Connect to the deployed application from Moleculer CLI
+	```bash
+	moleculer connect nats://<YOUR-CLUSTER-IP-ADDRESS>:4222
+	```
+
+# Horizontal Pod Auto Scaling
+The K3s & K8s deployment script containt a [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/) definition for the `calc` service. It scales number of the `calc` service pod between 2 and 5 by CPU usages.
+
+**Benchmark the `calc.pi` action to increase the CPU usages to trigger the K8s Horizontal Pod Autoscaler:**
+```bash
+ab -c 5 -n 500 http://mol-demo.127.0.0.1.nip.io/api/pi
+```
 
 # License
 Moleculer is available under the [MIT license](https://tldrlegal.com/license/mit-license).

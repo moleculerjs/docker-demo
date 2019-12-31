@@ -58,14 +58,7 @@ spec:
           - name: SERVICES
             value: api
           - name: TRANSPORTER
-            value: nats://nats:4222
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 64Mi        
+            value: nats://nats:4222      
 
 ---
 #########################################################
@@ -94,14 +87,36 @@ spec:
           - name: SERVICES
             value: greeter
           - name: TRANSPORTER
-            value: nats://nats:4222
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 64Mi                
+            value: nats://nats:4222    
+                       
+---
+#########################################################
+# Calc service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moleculer-demo-calc
+spec:
+  selector:
+    matchLabels:
+      app: moleculer-demo-calc
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: moleculer-demo-calc
+    spec:
+      containers:
+      - name: moleculer-demo-calc
+        image: moleculer/demo:1.2.0
+        env:
+          - name: SERVICEDIR
+            value: services
+          - name: SERVICES
+            value: calc
+          - name: TRANSPORTER
+            value: nats://nats:4222               
 
 ---
 #########################################################
@@ -132,14 +147,7 @@ spec:
           - name: TRANSPORTER
             value: nats://nats:4222
           - name: MONGO_URI
-            value: mongodb://mongo:27017/moleculer-demo
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 64Mi                
+            value: mongodb://mongo:27017/moleculer-demo              
 
 ---
 #########################################################
@@ -254,3 +262,26 @@ spec:
       targetPort: 27017
   selector:
     app: mongo          
+
+---
+#########################################################
+# Horizontal Pod AutoScaler for API service (K8s >= v1.17)
+#########################################################
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-service-calc
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: moleculer-demo-calc
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50    
