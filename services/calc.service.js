@@ -27,15 +27,15 @@ module.exports = {
 			handler(ctx) {
 				let count = ctx.params.count != null ? ctx.params.count : 100000000;			
 
-				let Pi=0;
-				let n=1;
-				for (let i=0;i<=count;i++)
+				let pi = 0;
+				let n = 1;
+				for (let i = 0; i <= count; i++)
 				{
-					Pi=Pi+(4/n)-(4/(n+2));
-					n=n+4;
+					pi = pi + (4 / n) - (4 / (n + 2));
+					n = n + 4;
 				}
 
-				return Pi;
+				return pi;
 			}
 		}
 	}
