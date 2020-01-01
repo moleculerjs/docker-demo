@@ -28,15 +28,9 @@ docker-compose up -d
 ```
 
 # Usage with Kubernetes
-This command starts all services in individual pods, a NATS server as transporter and a MongoDB server.
+This command starts all services in individual pods, a NATS server as transporter, a MongoDB server and register an ingress for API service via http://moleculer.127.0.0.1.nip.io/ URL.
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/moleculerjs/docker-demo/master/k8s.yaml
-```
-
-# Usage with [K3s](https://k3s.io/)
-This command starts all services in individual pods, a NATS server as transporter and a MongoDB server.
-```bash
-kubectl apply -f https://raw.githubusercontent.com/moleculerjs/docker-demo/master/k3s.yaml
 ```
 
 **Result**
@@ -120,15 +114,15 @@ curl http://$HOSTNAME/api/products
 	```
 
 # Horizontal Pod Auto Scaling
-The K3s & K8s deployment script containt a [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/) definition for the `calc` service. It scales number of the `calc` service pod between 2 and 5 by CPU usages.
+The deployment script contains a [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/) definition for the `calc` service. It scales the number of `calc` service pod between 2 and 5 by CPU usages.
 
 **Benchmark the `calc.pi` action to increase the CPU usages to trigger the K8s Horizontal Pod Autoscaler:**
 ```bash
-ab -c 5 -n 500 http://mol-demo.127.0.0.1.nip.io/api/pi
+ab -c 5 -n 500 http://moleculer.127.0.0.1.nip.io/api/pi
 ```
 
 # License
-Moleculer is available under the [MIT license](https://tldrlegal.com/license/mit-license).
+This project is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 # Contact
 Copyright (c) 2016-2019 MoleculerJS
