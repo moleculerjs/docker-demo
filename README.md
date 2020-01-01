@@ -94,7 +94,7 @@ curl http://$HOSTNAME/api/greeter/welcome?name=Moleculer
 
 **Create a product item**
 ```bash
-curl -X POST -d '{"name": "Samsung Galaxy S10", "category": "phones", "price": 299.99, "quantity": 10}' http://$HOSTNAME/api/products
+curl -X POST -H "Content-Type: application/json" -d '{"name": "Samsung Galaxy S10", "category": "phones", "price": 299.99, "quantity": 10}' http://$HOSTNAME/api/products
 ```
 
 **List all products**
