@@ -1,5 +1,7 @@
 "use strict";
 
+const HealthCheckMiddleware = require("./middlewares/healthcheck.middleware");
+
 /**
  * Moleculer ServiceBroker configuration file
  * 
@@ -127,7 +129,9 @@ module.exports = {
 	hotReload: false,
 
 	// Register custom middlewares
-	middlewares: [],
+	middlewares: [
+		HealthCheckMiddleware()
+	],
 
 	// Called after broker created.
 	created(broker) {

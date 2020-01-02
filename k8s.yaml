@@ -59,6 +59,14 @@ spec:
             value: api
           - name: TRANSPORTER
             value: nats://nats:4222      
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 3001      
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001      
 
 ---
 #########################################################
@@ -88,6 +96,14 @@ spec:
             value: greeter
           - name: TRANSPORTER
             value: nats://nats:4222    
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 3001      
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001      
 
 ---
 #########################################################
@@ -117,6 +133,14 @@ spec:
             value: calc
           - name: TRANSPORTER
             value: nats://nats:4222               
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 3001      
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001      
 
 ---
 #########################################################
@@ -148,6 +172,14 @@ spec:
             value: nats://nats:4222
           - name: MONGO_URI
             value: mongodb://mongo:27017/moleculer-demo              
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 3001      
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001      
 
 ---
 #########################################################

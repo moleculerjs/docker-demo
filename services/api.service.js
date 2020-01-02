@@ -20,7 +20,19 @@ module.exports = {
 			aliases: {
 				"GET /hello": "greeter.hello",
 				"REST /products": "products",
-				"GET /pi": "calc.pi"
+				"GET /pi": "calc.pi",
+
+				// For K8s healthcheck test
+				"GET /stop": function(req, res) {
+					req.$service.broker.stop();
+					res.writeHead(200);
+					res.end("OK");
+				},
+				"GET /kill": function(req, res) {
+					res.writeHead(200);
+					res.end("OK");
+					process.exit(1);
+				}
 			},
 
 			onAfterCall(ctx, route, req, res, data) {
