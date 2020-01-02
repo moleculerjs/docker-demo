@@ -1,5 +1,20 @@
 ---
 #########################################################
+# Common Environment variables ConfigMap
+#########################################################
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-env
+data:
+  NAMESPACE: ""
+  LOGLEVEL: info
+  SERVICEDIR: services
+  TRANSPORTER: nats://nats:4222
+  MONGO_URI: mongodb://mongo/moleculer-demo
+
+---
+#########################################################
 # Service for Moleculer API Gateway service
 #########################################################
 apiVersion: v1
@@ -52,13 +67,12 @@ spec:
       containers:
       - name: moleculer-demo-api
         image: moleculer/demo:1.3.0
+        envFrom:
+        - configMapRef:
+            name: common-env
         env:
-          - name: SERVICEDIR
-            value: services
           - name: SERVICES
             value: api
-          - name: TRANSPORTER
-            value: nats://nats:4222      
         livenessProbe:
           httpGet:
             path: /live
@@ -89,13 +103,12 @@ spec:
       containers:
       - name: moleculer-demo-greeter
         image: moleculer/demo:1.3.0
+        envFrom:
+        - configMapRef:
+            name: common-env
         env:
-          - name: SERVICEDIR
-            value: services
           - name: SERVICES
             value: greeter
-          - name: TRANSPORTER
-            value: nats://nats:4222    
         livenessProbe:
           httpGet:
             path: /live
@@ -126,13 +139,12 @@ spec:
       containers:
       - name: moleculer-demo-calc
         image: moleculer/demo:1.3.0
+        envFrom:
+        - configMapRef:
+            name: common-env
         env:
-          - name: SERVICEDIR
-            value: services
           - name: SERVICES
             value: calc
-          - name: TRANSPORTER
-            value: nats://nats:4222               
         livenessProbe:
           httpGet:
             path: /live
@@ -163,15 +175,12 @@ spec:
       containers:
       - name: moleculer-demo-products
         image: moleculer/demo:1.3.0
+        envFrom:
+        - configMapRef:
+            name: common-env
         env:
-          - name: SERVICEDIR
-            value: services
           - name: SERVICES
             value: products
-          - name: TRANSPORTER
-            value: nats://nats:4222
-          - name: MONGO_URI
-            value: mongodb://mongo:27017/moleculer-demo              
         livenessProbe:
           httpGet:
             path: /live
