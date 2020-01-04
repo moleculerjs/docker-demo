@@ -27,6 +27,12 @@ This command starts all services in individual containers, a NATS server as tran
 docker-compose up -d
 ```
 
+# Usage with Docker Swarm
+This command starts all services in individual containers, a NATS server as transporter, a MongoDB server & Traefik as reverse proxy.
+```bash
+docker stack deploy -c docker-compose.yml moleculer
+```
+
 # Usage with Kubernetes
 This command starts all services in individual pods, a NATS server as transporter, a MongoDB server and register an ingress for API service via http://moleculer.127.0.0.1.nip.io/ URL.
 ```bash
