@@ -412,14 +412,14 @@
 
 				updateNodeList: function (name) {
 					this.req("/api/~node/list", null, false).then(res => {
-						res.sort((a,b) => a.id.toLocaleCompare(b.id));
+						res.sort((a,b) => a.id.localeCompare(b.id));
 						this.nodes = res;
 					});
 				},
 
 				updateServiceList: function (name) {
 					this.req("/api/~node/services", null, false).then(res => {
-						res.sort((a,b) => a.name.toLocaleCompare(b.name));
+						res.sort((a,b) => a.name.localeCompare(b.name));
 						res.forEach(svc => {
 							svc.nodes.sort();
 						})
@@ -429,7 +429,7 @@
 
 				updateActionList: function (name) {
 					this.req("/api/~node/actions", null, false).then(res => {
-						res.sort((a,b) => a.name.toLocaleCompare(b.name));
+						res.sort((a,b) => a.name.localeCompare(b.name));
 						this.actions = res;
 					});
 				},
