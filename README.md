@@ -134,6 +134,6 @@ ab -c 5 -n 500 http://moleculer.127.0.0.1.nip.io/api/pi
 This project is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 # Contact
-Copyright (c) 2016-2019 MoleculerJS
+Copyright (c) 2016-2020 MoleculerJS
 
 [![@moleculerjs](https://img.shields.io/badge/github-moleculerjs-green.svg)](https://github.com/moleculerjs) [![@MoleculerJS](https://img.shields.io/badge/twitter-MoleculerJS-blue.svg)](https://twitter.com/MoleculerJS)
