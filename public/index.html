@@ -250,7 +250,7 @@
 					<div class="content">
 						<div class="request">
 							<h4>Request:</h4>
-							<code>{{ item.method || 'GET' }} {{ item.rest }}   </code>
+							<code>{{ item.method || 'GET' }} <a target="_blank" :href="item.rest">{{ item.rest }}   </a></code>
 							<a class="button" @click="callAction(item)">Execute</a>
 						</div>
 						<div class="response" v-if="item.status">
@@ -298,7 +298,7 @@
 						<th>Instances</th>
 					</thead>
 					<tbody>
-						<tr v-for="svc in services">
+						<tr v-for="svc in filteredServices">
 							<td>{{ svc.name }}</td>
 							<td>{{ svc.version ? svc.version : "-" }}</td>
 							<td class="badges">
@@ -319,14 +319,14 @@
 						<th>Status</th>
 					</thead>
 					<tbody>
-						<tr v-for="action in actions" :class="{ offline: !action.available, local: action.hasLocal }">
+						<tr v-for="action in filteredActions" :class="{ offline: !action.available, local: action.hasLocal }">
 							<td>{{ action.name }}</td>
 							<td>
 								<template v-if="action.action">
 									<div class="badge" v-if="action.action.cache">
 										Yes
 									</div>
-									<span v-else>No</span>
+									<span v-else></span>
 								</template>
 							</td>
 							<td>{{ action.count }}</td>
@@ -377,6 +377,16 @@
 				actions: [],
 			},
 
+			computed: {
+				filteredActions() {
+					return this.actions.filter(action => !action.name.startsWith("$"));
+				},
+
+				filteredServices() {
+					return this.services.filter(svc => !svc.name.startsWith("$"));
+				}
+			},
+
 			methods: {
 				changePage(page) {
 					this.page = page;
@@ -420,9 +430,7 @@
 				updateServiceList: function (name) {
 					this.req("/api/~node/services", null, false).then(res => {
 						res.sort((a,b) => a.name.localeCompare(b.name));
-						res.forEach(svc => {
-							svc.nodes.sort();
-						})
+						res.forEach(svc => svc.nodes.sort());
 						this.services = res;
 					});
 				},
