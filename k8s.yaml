@@ -59,6 +59,7 @@ spec:
     matchLabels:
       app: api
   replicas: 2
+  revisionHistoryLimit: 0
   template:
     metadata:
       labels:
@@ -95,6 +96,7 @@ spec:
     matchLabels:
       app: greeter
   replicas: 2
+  revisionHistoryLimit: 0
   template:
     metadata:
       labels:
@@ -132,6 +134,7 @@ spec:
     matchLabels:
       app: calc
   replicas: 2
+  revisionHistoryLimit: 0
   template:
     metadata:
       labels:
@@ -172,6 +175,7 @@ spec:
     matchLabels:
       app: products
   replicas: 2
+  revisionHistoryLimit: 0
   template:
     metadata:
       labels:
@@ -227,6 +231,7 @@ spec:
   replicas: 1
   strategy:
     type: Recreate  
+  revisionHistoryLimit: 0
   template:
     metadata:
       labels:
@@ -244,7 +249,7 @@ spec:
 # Mongo database
 #########################################################
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mongo
   labels:
@@ -254,8 +259,7 @@ spec:
     matchLabels:
       app: mongo
   replicas: 1
-  strategy:
-    type: Recreate
+  serviceName: mongo
   template:
     metadata:
       labels:
