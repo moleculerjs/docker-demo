@@ -244,7 +244,7 @@ spec:
 # Mongo database
 #########################################################
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mongo
   labels:
@@ -254,8 +254,9 @@ spec:
     matchLabels:
       app: mongo
   replicas: 1
-  strategy:
-    type: Recreate
+  #strategy:
+  #  type: Recreate
+  serviceName: mongo
   template:
     metadata:
       labels:
