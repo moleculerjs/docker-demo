@@ -283,7 +283,7 @@
 							
 							<td><div class="badge" :class="{ green: node.available, red: !node.available }">{{ node.available ? "Online": "Offline" }}</div></td>
 							<td>
-								<div class="bar" :style="{ width: node.cpu + '%' }"></div>
+								<div class="bar" :style="{ width: node.cpu != null ? node.cpu + '%' : '0' }"></div>
 								{{ node.cpu != null ? Number(node.cpu).toFixed(0) + '%' : '-' }}
 							</td>
 						</tr>
