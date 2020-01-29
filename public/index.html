@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
-	<title>mol-demo-14 - Moleculer Microservices Project</title>
+	<title>tmp - Moleculer Microservices Project</title>
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 	<link href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="shortcut icon" type="image/png" href="https://moleculer.services/icon/favicon-16x16.png"/>
@@ -587,8 +587,7 @@
 
 			computed: {
 				filteredServices() {
-					const res = this.services.filter(svc => !svc.name.startsWith("$"));
-					return res;
+					return this.services.filter(svc => !svc.name.startsWith("$"));
 				}
 			},			
 
@@ -699,14 +698,22 @@
 				},
 
 				updateNodeList: function (name) {
-					this.req("/api/~node/list", null).then(res => this.nodes = res);
+					this.req("/api/~node/list", null).then(res => {
+						res.sort((a,b) => a.id.localeCompare(b.id));
+						this.nodes = res;
+					});
 				},
 
 				updateServiceList: function (name) {
 					this.req("/api/~node/services?withActions=true", null)
-						.then(res => this.services = res)
+						.then(res => {
+							this.services = res;
+							res.sort((a,b) => a.name.localeCompare(b.name));
+							res.forEach(svc => svc.nodes.sort());				
+						})
 						.then(() => this.req("/api/~node/actions", null))
 						.then(res => {
+							res.sort((a,b) => a.name.localeCompare(b.name));
 							const actions = res.reduce((a,b) => {
 								a[b.name] = b;
 								return a;
