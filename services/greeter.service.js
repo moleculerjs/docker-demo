@@ -13,11 +13,14 @@ module.exports = {
 		 *
 		 * @returns
 		 */
-		hello(ctx) {
-			ctx.meta.$responseHeaders = {
-				"X-NodeID": this.broker.nodeID
-			};
-			return `Hello Moleculer from node '${this.broker.nodeID}'`;
+		hello: {
+			rest: "/hello",
+			async handler(ctx) {
+				ctx.meta.$responseHeaders = {
+					"X-NodeID": this.broker.nodeID
+				};
+				return `Hello Moleculer from node '${this.broker.nodeID}'`;
+			}
 		},
 
 		/**
@@ -26,6 +29,7 @@ module.exports = {
 		 * @param {String} name - User name
 		 */
 		welcome: {
+			rest: "/welcome",			
 			params: {
 				name: "string"
 			},

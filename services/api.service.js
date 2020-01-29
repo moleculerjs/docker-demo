@@ -17,6 +17,8 @@ module.exports = {
 				"**"
 			],
 
+			autoAliases: true,
+
 			aliases: {
 				"GET /hello": "greeter.hello",
 				"REST /products": "products",
@@ -34,6 +36,8 @@ module.exports = {
 					process.exit(1);
 				}
 			},
+
+			mappingPolicy: "all",
 
 			onAfterCall(ctx, route, req, res, data) {
 				res.setHeader("X-ApiGateway", this.broker.nodeID);
