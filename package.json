@@ -1,6 +1,6 @@
 {
   "name": "docker-demo",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "My Moleculer microservices project",
   "scripts": {
     "dev": "moleculer-runner --repl --hot services",
