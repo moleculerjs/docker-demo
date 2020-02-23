@@ -11,6 +11,7 @@ data:
   LOGLEVEL: info
   SERVICEDIR: services
   TRANSPORTER: nats://nats:4222
+  CACHER: redis://redis:6379
   MONGO_URI: mongodb://mongo/moleculer-demo
 
 ---
@@ -67,7 +68,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: moleculer/demo:2.0.3
+        image: moleculer/demo:2.1.0
         envFrom:
         - configMapRef:
             name: common-env
@@ -104,7 +105,7 @@ spec:
     spec:
       containers:
       - name: greeter
-        image: moleculer/demo:2.0.3
+        image: moleculer/demo:2.1.0
         envFrom:
         - configMapRef:
             name: common-env
@@ -142,7 +143,7 @@ spec:
     spec:
       containers:
       - name: calc
-        image: moleculer/demo:2.0.3
+        image: moleculer/demo:2.1.0
         envFrom:
         - configMapRef:
             name: common-env
@@ -183,7 +184,7 @@ spec:
     spec:
       containers:
       - name: products
-        image: moleculer/demo:2.0.3
+        image: moleculer/demo:2.1.0
         envFrom:
         - configMapRef:
             name: common-env
@@ -243,6 +244,50 @@ spec:
         ports:
         - containerPort: 4222
           name: nats
+
+---
+#########################################################
+# Redis service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    name: redis
+    targetPort: 6379
+
+---
+#########################################################
+# Redis transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  replicas: 1
+  strategy:
+    type: Recreate  
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        ports:
+        - containerPort: 6379
+          name: redis
 
 ---
 #########################################################
