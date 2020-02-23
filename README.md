@@ -72,6 +72,7 @@ replicaset.apps/moleculer-demo-products-784446b876   2         2         2      
 ```
 
 >If you don't have installed ingress controller, [execute this script](https://gist.github.com/icebob/2fae81d90cda3740e4f41e6080a29632) to install Nginx Ingress Controller.
+
 >If you don't have installed storage controller, [execute this script](https://gist.github.com/icebob/fa969c7696269d72a4e6e8378f9f9595) to install [Longhorn Storage Controller](https://github.com/longhorn/longhorn).
 
 # Services
