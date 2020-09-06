@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: moleculer/demo:2.1.0
+        image: moleculer/demo:2.2.0
         envFrom:
         - configMapRef:
             name: common-env
@@ -105,7 +105,7 @@ spec:
     spec:
       containers:
       - name: greeter
-        image: moleculer/demo:2.1.0
+        image: moleculer/demo:2.2.0
         envFrom:
         - configMapRef:
             name: common-env
@@ -143,7 +143,7 @@ spec:
     spec:
       containers:
       - name: calc
-        image: moleculer/demo:2.1.0
+        image: moleculer/demo:2.2.0
         envFrom:
         - configMapRef:
             name: common-env
@@ -184,7 +184,7 @@ spec:
     spec:
       containers:
       - name: products
-        image: moleculer/demo:2.1.0
+        image: moleculer/demo:2.2.0
         envFrom:
         - configMapRef:
             name: common-env
