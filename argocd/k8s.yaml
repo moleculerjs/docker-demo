@@ -1,0 +1,383 @@
+---
+#########################################################
+# Common Environment variables ConfigMap
+#########################################################
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-env
+data:
+  NAMESPACE: ""
+  LOGLEVEL: info
+  SERVICEDIR: services
+  TRANSPORTER: nats://nats:4222
+  CACHER: redis://redis:6379
+  MONGO_URI: mongodb://mongo/moleculer-demo
+
+---
+#########################################################
+# Service for Moleculer API Gateway service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+spec:
+  selector:
+    app: api
+  ports:
+  - port: 3000
+    targetPort: 3000
+
+---
+#########################################################
+# Ingress for Moleculer API Gateway
+#########################################################
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: moleculer.127.0.0.1.nip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: api
+          servicePort: 3000
+
+---
+#########################################################
+# API Gateway service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  selector:
+    matchLabels:
+      app: api
+  replicas: 2
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: moleculer/demo:2.1.0
+        envFrom:
+        - configMapRef:
+            name: common-env
+        env:
+          - name: SERVICES
+            value: api
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 3001      
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001      
+      terminationGracePeriodSeconds: 5
+---
+#########################################################
+# Greeter service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeter
+spec:
+  selector:
+    matchLabels:
+      app: greeter
+  replicas: 2
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        app: greeter
+    spec:
+      containers:
+      - name: greeter
+        image: moleculer/demo:2.1.0
+        envFrom:
+        - configMapRef:
+            name: common-env
+        env:
+          - name: SERVICES
+            value: greeter
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 3001      
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001      
+      terminationGracePeriodSeconds: 5
+
+---
+#########################################################
+# Calc service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calc
+spec:
+  selector:
+    matchLabels:
+      app: calc
+  replicas: 2
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        app: calc
+    spec:
+      containers:
+      - name: calc
+        image: moleculer/demo:2.1.0
+        envFrom:
+        - configMapRef:
+            name: common-env
+        env:
+          - name: SERVICES
+            value: calc
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 3001      
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001      
+        resources:
+          requests:
+            cpu: 500m
+      terminationGracePeriodSeconds: 5
+
+---
+#########################################################
+# Products service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products
+spec:
+  selector:
+    matchLabels:
+      app: products
+  replicas: 2
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        app: products
+    spec:
+      containers:
+      - name: products
+        image: moleculer/demo:2.1.0
+        envFrom:
+        - configMapRef:
+            name: common-env
+        env:
+          - name: SERVICES
+            value: products
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 3001      
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001      
+      terminationGracePeriodSeconds: 5
+
+---
+#########################################################
+# NATS transporter service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats
+spec:
+  selector:
+    app: nats
+  ports:
+  - port: 4222
+    name: nats
+    targetPort: 4222
+
+---
+#########################################################
+# NATS transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats
+spec:
+  selector:
+    matchLabels:
+      app: nats
+  replicas: 1
+  strategy:
+    type: Recreate  
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        app: nats
+    spec:
+      containers:
+      - name: nats
+        image: nats
+        ports:
+        - containerPort: 4222
+          name: nats
+
+---
+#########################################################
+# Redis service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    name: redis
+    targetPort: 6379
+
+---
+#########################################################
+# Redis transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  replicas: 1
+  strategy:
+    type: Recreate  
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        ports:
+        - containerPort: 6379
+          name: redis
+
+---
+#########################################################
+# Mongo database
+#########################################################
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  selector:
+    matchLabels:
+      app: mongo
+  replicas: 1
+  serviceName: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - image: mongo
+          name: mongo
+          ports:
+            - containerPort: 27017
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-data
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: mongo-data
+      terminationGracePeriodSeconds: 5
+
+---
+#########################################################
+# Persistent volume
+#########################################################
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-data
+  labels:
+    name: mongo-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+#########################################################
+# Mongo database service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongo          
+
+---
+#########################################################
+# Horizontal Pod AutoScaler for API service (K8s >= v1.17)
+#########################################################
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-calc
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: calc
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50    
